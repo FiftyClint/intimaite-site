@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>intimaite - Your Private Intimate Experience Tracker</title>
+    <style>
+        :root {
+            --deep-plum: #2A103D;
+            --violet-glow: #D85FFF;
+            --soft-lavender: #C2A8E0;
+            --off-white: #F5F2FA;
+            --slate-gray: #6E687B;
+            
+            --primary: var(--soft-lavender);
+            --primary-dark: var(--deep-plum);
+            --primary-glow: var(--violet-glow);
+            --text: var(--deep-plum);
+            --text-light: var(--slate-gray);
+            --background: #ffffff;
+            --background-alt: var(--off-white);
+            --border: var(--slate-gray);
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Inter:wght@400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, .body-text {
+            font-family: 'Inter', 'San Francisco', 'Roboto', 'Helvetica Neue', sans-serif;
+            font-weight: 400;
+        }
+        
+        h1, h2, h3, .headline {
+            font-family: 'DM Sans', 'Inter', 'San Francisco', 'Roboto', 'Helvetica Neue', sans-serif;
+            font-weight: 700;
+        }
+        
+        .ui-label, button, .nav-link {
+            font-family: 'Inter', 'San Francisco', 'Roboto', 'Helvetica Neue', sans-serif;
+            font-weight: 500;
+        }
+        
+        body {
+            color: var(--text);
+            background-color: var(--background);
+            line-height: 1.6;
+        }
+        
+        header {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo img {
+            max-height: 40px;
+            width: auto;
+            display: block;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-glow) 100%);
+            transition: width 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--primary-dark);
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--off-white) 0%, var(--deep-plum) 300%);
+            padding: 6rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 70% 30%, rgba(216, 95, 255, 0.15), transparent 60%);
+            z-index: 0;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+        
+        .cta-button {
+            background-color: var(--primary-dark);
+            color: var(--off-white);
+            border: none;
+            padding: 0.875rem 2rem;
+            font-size: 1.125rem;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(42, 16, 61, 0.15);
+        }
+        
+        .cta-button:hover {
+            background-color: var(--deep-plum);
+            box-shadow: 0 6px 16px rgba(42, 16, 61, 0.25);
+            transform: translateY(-2px);
+        }
+        
+        .secondary-button {
+            background-color: transparent;
+            color: var(--primary-dark);
+            border: 2px solid var(--primary-dark);
+            padding: 0.75rem 1.75rem;
+            font-size: 1.125rem;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 1rem;
+        }
+        
+        .secondary-button:hover {
+            background-color: rgba(42, 16, 61, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        .features {
+            padding: 6rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.25rem;
+            margin-bottom: 3rem;
+            color: var(--primary-dark);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: var(--background-alt);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-glow) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(42, 16, 61, 0.1);
+        }
+        
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-glow);
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 8px rgba(216, 95, 255, 0.2));
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+        
+        .app-preview {
+            background-color: var(--background-alt);
+            padding: 6rem 1.5rem;
+            text-align: center;
+        }
+        
+        .app-preview-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .preview-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+        
+        .preview-image {
+            width: 100%;
+            height: 200px;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .preview-content {
+            padding: 1.5rem;
+        }
+        
+        .preview-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-dark);
+        }
+        
+        .testimonials {
+            padding: 6rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial-card {
+            background-color: var(--background-alt);
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+        
+        .testimonial-author {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        .faq {
+            padding: 6rem 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 0;
+        }
+        
+        .faq-question {
+            font-size: 1.25rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            margin-top: 1rem;
+            color: var(--text-light);
+            display: none;
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        .footer {
+            background-color: var(--background-alt);
+            padding: 4rem 1.5rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .footer-link {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary);
+        }
+        
+        .copyright {
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.25rem;
+            }
+            
+            .cta-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .secondary-button {
+                margin-left: 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .feature-card, .preview-card, .testimonial-card {
+                padding: 1.5rem;
+            }
+        }
+        
+        /* Animation for benefits counter */
+        .benefits-counter {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 4rem 0;
+        }
+        
+        .counter-item {
+            text-align: center;
+            margin: 1rem;
+        }
+        
+        .counter-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-glow);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(216, 95, 255, 0.2);
+        }
+        
+        .counter-label {
+            color: var(--text-light);
+            font-size: 1.125rem;
+        }
+        
+        /* Privacy emphasis */
+        .privacy-banner {
+            background-color: var(--primary-dark);
+            color: var(--off-white);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .privacy-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(216, 95, 255, 0.1), transparent 70%);
+            z-index: 0;
+        }
+        
+        .privacy-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .privacy-title {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Mobile app mockup */
+        .mockup-container {
+            margin: 3rem 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .phone-mockup {
+            width: 300px;
+            height: 600px;
+            background-color: white;
+            border-radius: 36px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            border: 8px solid #2d2d2d;
+        }
+        
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background-color: var(--background-alt);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .app-header {
+            height: 60px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--border);
+            font-size: 1.25rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        .app-content {
+            flex: 1;
+            padding: 1rem;
+        }
+        
+        .app-calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        
+        .calendar-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .calendar-day {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
+        
+        .calendar-date {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 0.875rem;
+        }
+        
+        .calendar-date.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .calendar-date.has-data {
+            position: relative;
+        }
+        
+        .calendar-date.has-data::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            width: 4px;
+            height: 4px;
+            background-color: var(--primary);
+            border-radius: 50%;
+        }
+        
+        .app-nav {
+            height: 60px;
+            background-color: white;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .nav-item {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: var(--text-light);
+        }
+        
+        .nav-item.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#" class="logo">
+            <img src=""intimaite-logo.png" alt="intimaite logo" width="150" height="auto">
+        </a>
+        <nav>
+            <ul>
+                <li><a href="#features" class="ui-label">Features</a></li>
+                <li><a href="#preview" class="ui-label">Preview</a></li>
+                <li><a href="#privacy" class="ui-label">Privacy</a></li>
+                <li><a href="#faq" class="ui-label">FAQ</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Your Intimate Moments, Privately Tracked</h1>
+            <p class="subtitle">A clean, private, and intuitive app for tracking and reflecting on your intimate experiences</p>
+            <div class="cta-buttons">
+                <a href="#" class="cta-button">Early Access</a>
+                <a href="#features" class="secondary-button">Learn More</a>
+            </div>
+            
+            <div class="mockup-container">
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="app-header">
+                            <img src="intimaite-logo.png" alt="intimaite logo" width="100" height="auto">
+                        </div>
+                        <div class="app-content">
+                            <h3 style="margin-bottom: 1rem; color: var(--primary-dark);">April 2025</h3>
+                            <div class="calendar-header">
+                                <div class="calendar-day">S</div>
+                                <div class="calendar-day">M</div>
+                                <div class="calendar-day">T</div>
+                                <div class="calendar-day">W</div>
+                                <div class="calendar-day">T</div>
+                                <div class="calendar-day">F</div>
+                                <div class="calendar-day">S</div>
+                            </div>
+                            <div class="app-calendar">
+                                <div class="calendar-date">29</div>
+                                <div class="calendar-date">30</div>
+                                <div class="calendar-date">31</div>
+                                <div class="calendar-date">1</div>
+                                <div class="calendar-date has-data">2</div>
+                                <div class="calendar-date">3</div>
+                                <div class="calendar-date">4</div>
+                                <div class="calendar-date has-data">5</div>
+                                <div class="calendar-date active">6</div>
+                                <div class="calendar-date">7</div>
+                                <div class="calendar-date">8</div>
+                                <div class="calendar-date has-data">9</div>
+                                <div class="calendar-date">10</div>
+                                <div class="calendar-date">11</div>
+                                <div class="calendar-date">12</div>
+                                <div class="calendar-date">13</div>
+                                <div class="calendar-date has-data">14</div>
+                                <div class="calendar-date">15</div>
+                                <div class="calendar-date">16</div>
+                                <div class="calendar-date">17</div>
+                                <div class="calendar-date">18</div>
+                                <div class="calendar-date">19</div>
+                                <div class="calendar-date">20</div>
+                                <div class="calendar-date">21</div>
+                                <div class="calendar-date">22</div>
+                                <div class="calendar-date">23</div>
+                                <div class="calendar-date">24</div>
+                                <div class="calendar-date">25</div>
+                                <div class="calendar-date">26</div>
+                                <div class="calendar-date">27</div>
+                                <div class="calendar-date">28</div>
+                                <div class="calendar-date">29</div>
+                                <div class="calendar-date">30</div>
+                                <div class="calendar-date">1</div>
+                                <div class="calendar-date">2</div>
+                            </div>
+                            
+                            <div style="margin-top: 2rem; background-color: white; border-radius: 12px; padding: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <div style="font-weight: 600;">April 6, 2025</div>
+                                    <div style="color: var(--primary); font-weight: 600;">Edit</div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <div style="color: var(--text-light);">Rating</div>
+                                    <div>★★★★☆</div>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <div style="color: var(--text-light);">Duration</div>
+                                    <div>45 min</div>
+                                </div>
+                                <div style="text-align: center; margin-top: 1rem;">
+                                    <button style="background-color: var(--primary); color: white; border: none; border-radius: 8px; padding: 0.5rem 1rem; font-weight: 600;">View Details</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="app-nav">
+                            <div class="nav-item active">
+                                📅
+                            </div>
+                            <div class="nav-item">
+                                ➕
+                            </div>
+                            <div class="nav-item">
+                                📊
+                            </div>
+                            <div class="nav-item">
+                                ⚙️
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="benefits-counter">
+        <div class="counter-item">
+            <div class="counter-value">100%</div>
+            <div class="counter-label">Private & Secure</div>
+        </div>
+        <div class="counter-item">
+            <div class="counter-value">5+</div>
+            <div class="counter-label">Customizable Views</div>
+        </div>
+        <div class="counter-item">
+            <div class="counter-value">10+</div>
+            <div class="counter-label">Metrics Tracked</div>
+        </div>
+    </section>
+    
+    <section class="features" id="features">
+        <h2 class="section-title">Features Designed With You in Mind</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📅</div>
+                <h3 class="feature-title">Calendar View</h3>
+                <p>Track your intimate experiences through an intuitive monthly calendar interface. Quickly identify patterns and frequency with visual indicators.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">Detailed Metrics</h3>
+                <p>Gain insights through comprehensive statistics on frequency, duration, satisfaction ratings, and preferred activities over time.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3 class="feature-title">Complete Privacy</h3>
+                <p>Your data remains on your device with optional biometric or passcode protection. No cloud storage unless you choose to enable it.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3 class="feature-title">Partner Management</h3>
+                <p>Add multiple partners and track experiences individually or collectively. Perfect for all relationship structures.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3 class="feature-title">Customizable Logging</h3>
+                <p>Choose between quick logs for basic tracking or detailed entries with positions, toys, and reflective notes.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3 class="feature-title">Smart Defaults</h3>
+                <p>Save time with intelligent suggestions based on your patterns. The app learns what you prefer without sharing your data.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="privacy-banner" id="privacy">
+        <div class="privacy-content">
+            <h2 class="privacy-title">Your Privacy Is Our Priority</h2>
+            <p>All data is stored locally on your device. No accounts required, no servers storing your sensitive information, and no tracking. Your intimate data remains yours alone.</p>
+        </div>
+    </section>
+    
+    <section class="app-preview" id="preview">
+        <div class="app-preview-content">
+            <h2 class="section-title">Experience The App</h2>
+            <p style="max-width: 700px; margin: 0 auto 2rem auto;">intimaite offers flexible ways to log and visualize your intimate experiences, with data presentations that help you understand your patterns and preferences.</p>
+            
+            <div class="preview-grid">
+                <div class="preview-card">
+                    <div class="preview-image">Calendar View</div>
+                    <div class="preview-content">
+                        <h3 class="preview-title">Monthly Overview</h3>
+                        <p>See your activity at a glance with our intuitive calendar display. Different indicators show frequency and ratings.</p>
+                    </div>
+                </div>
+                <div class="preview-card">
+                    <div class="preview-image">Log Entry Screen</div>
+                    <div class="preview-content">
+                        <h3 class="preview-title">Flexible Logging</h3>
+                        <p>Choose between quick logs or detailed entries with our progressive disclosure design. Log only what matters to you.</p>
+                    </div>
+                </div>
+                <div class="preview-card">
+                    <div class="preview-image">Statistics Dashboard</div>
+                    <div class="preview-content">
+                        <h3 class="preview-title">Insightful Analytics</h3>
+                        <p>View trends in frequency, satisfaction, and preferences over time with beautiful, easy-to-understand charts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="testimonials">
+        <h2 class="section-title">What Early Users Are Saying</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <p class="testimonial-text">"This app has helped me understand my patterns and preferences in a way I never could before. The privacy features give me total peace of mind."</p>
+                <p class="testimonial-author">- Alex, 32</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"As someone in a long-term relationship, intimaite has helped us track what works for both of us and keep our intimate life exciting and fulfilling."</p>
+                <p class="testimonial-author">- Jordan, 28</p>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">"The customizable fields and flexible logging options make this perfect for my needs. No judgment, just helpful tracking and insights."</p>
+                <p class="testimonial-author">- Sam, 35</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="faq" id="faq">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-item active">
+            <div class="faq-question">Is my data private and secure?</div>
+            <div class="faq-answer">Yes, absolutely. All your data is stored locally on your device by default. We offer optional biometric and passcode protection, and you can enable or disable any cloud backups. Your intimate data never leaves your control.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Can I use this app with my partner?</div>
+            <div class="faq-answer">Yes! intimaite is designed for both solo users and partners. You can share a device and track collaboratively, or maintain separate accounts and share insights as you prefer.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">What if I want to track something not included in the app?</div>
+            <div class="faq-answer">We've built intimaite to be highly customizable. You can add custom positions, toys, or other details that matter to you. The app grows with your needs and preferences.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">Is there a subscription fee?</div>
+            <div class="faq-answer">intimaite offers both free and premium tiers. The core tracking features are available for free, while advanced analytics and additional customization are available via a modest subscription that helps us maintain the service without selling your data.</div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">How do I export or delete my data?</div>
+            <div class="faq-answer">You have complete control over your data. You can export it to JSON format at any time from the Settings screen. You can also delete individual entries or clear all data with confirmation steps to prevent accidental deletion.</div>
+        </div>
+    </section>
+    
+    <section class="cta-section" style="padding: 6rem 1.5rem; text-align: center; background-color: var(--background-alt);">
+        <div style="max-width: 700px; margin: 0 auto;">
+            <h2 class="section-title">Ready to Track Your Intimate Journey?</h2>
+            <p style="margin-bottom: 2rem;">Join our early access program and be among the first to experience the most private and thoughtful intimate tracking app available.</p>
+            <a href="#" class="cta-button">Get Early Access</a>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <a href="#" class="logo">
+                <img src="intimaite-logo.png" alt="intimaite logo" width="150" height="auto">
+            </a>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">About</a>
+            </div>
+            <p class="copyright">© 2025 intimaite. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Simple FAQ toggle functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                faqItem.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
